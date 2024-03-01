@@ -13,24 +13,24 @@
 SECODARY:'#042940',
     BACKGROUND: '#fefefe',
     OUTER: '#495057',
-    INNER: '#15aabf',
-    BUMPER: '#F7CC1D',
     BUMPER_LIT: '#fff3bf',
-    PADDLE: '#e64980',
     PINBALL: '#F7CC1D'
   };
   const GRAVITY = 1;
   const WIREFRAMES = false;
   const BUMPER_BOUNCE = 0.0;
   const BALLCOUNT = 400;
-    const ballSize = 6;
-    const bumpers  = [];
-    const rows = 15;
-    const vertivalDistance = 20;
-    const horizontalDistance = 30;
-    const size =4;
-    const centerX = 250;
-    const topY = 100;
+  const ballSize = 5  ;
+  const bumpers  = [];
+  const rows = 15;
+  const vertivalDistance = 20;
+  const horizontalDistance = 30;
+  const size =5;
+  const centerX = 250;
+  const topY = 100;
+  const walls = 15;
+  const width = 500;
+
 
 
   // shared variables
@@ -52,7 +52,7 @@ SECODARY:'#042940',
     world = engine.world;
     world.bounds = {
       min: { x: 0, y: 0},
-      max: { x: 500, y: 800 }
+      max: { x: width, y: 800 }
     };
     world.gravity.y = GRAVITY; // simulate rolling on a slanted table
 
@@ -88,6 +88,10 @@ SECODARY:'#042940',
         }
     }
 
+    const collectionWalls = Array.from({ length: walls }, (v, i) => {
+        return collectionWall(width/walls + i * width/walls, 675, 2, 250, COLOR.PRIMARY);
+      });
+
     // collectionWalls
 
     
@@ -100,16 +104,20 @@ SECODARY:'#042940',
 
 
       ...bumpers,
+/*
+      collectionWall(50,675, 2, 250, COLOR.PRIMARY),
+      collectionWall(100,675, 2, 250, COLOR.PRIMARY),
+      collectionWall(150,675, 2, 250,COLOR.PRIMARY),
+      collectionWall(200,675, 2, 250,COLOR.PRIMARY),
+      collectionWall(250,675,2, 250, COLOR.PRIMARY),
+      collectionWall(300,675, 2, 250, COLOR.PRIMARY),
+      collectionWall(350,675, 2, 250, COLOR.PRIMARY),
+      collectionWall(400,675, 2, 250, COLOR.PRIMARY),
+      collectionWall(450,675, 2, 250, COLOR.PRIMARY),
+*/
+...collectionWalls,
 
-      collectionWall(50,675, 5, 250, COLOR.PRIMARY),
-      collectionWall(100,675, 5, 250, COLOR.PRIMARY),
-      collectionWall(150,675, 5, 250,COLOR.PRIMARY),
-      collectionWall(200,675, 5, 250,COLOR.PRIMARY),
-      collectionWall(250,675, 5, 250, COLOR.PRIMARY),
-      collectionWall(300,675, 5, 250, COLOR.PRIMARY),
-      collectionWall(350,675, 5, 250, COLOR.PRIMARY),
-      collectionWall(400,675, 5, 250, COLOR.PRIMARY),
-      collectionWall(450,675, 5, 250, COLOR.PRIMARY),
+
        // wall(115,50, 5,250, COLOR.OUTER, 2),
        // wall(390,100, 5,250, COLOR.OUTER, 1),
        // wall(390,100, 5,250, COLOR.OUTER),
@@ -135,7 +143,7 @@ for (let i = 0; i < BALLCOUNT; i++) {
 
     setTimeout(() => {
         Matter.World.add(world, ball);
-        Matter.Body.setPosition( ball, { x: 250, y:125 });
+        Matter.Body.setPosition( ball, { x: width/2, y:125 });
         Matter.Body.setVelocity( ball, { x: 0, y: 0 });
         Matter.Body.setAngularVelocity( ball, 0);
         },200 * i);
@@ -186,7 +194,7 @@ for (let i = 0; i < BALLCOUNT; i++) {
     return Matter.Bodies.rectangle(x, y, width, height, {
       angle: angle,
       isStatic: true,
-      chamfer: { radius: 5 },
+      chamfer: { radius: 2 },
       render: {
         fillStyle: color
       }
